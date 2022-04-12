@@ -6,13 +6,18 @@
 #include "MapSquare.h"
 #include "MapAbsoluteValue.h"
 
+#include "FilterGeneric.h"
+#include "FilterOdd.h"
+#include "FilterNonPositive.h"
+#include "FilterForTwoDigitPositive.h"
+
 using namespace std;
 
 int main() {
-    MapGeneric * test = new MapTriple();
-    vector<int> num {1, -2, 3, 4, -5};
+    FilterGeneric * test = new FilterForTwoDigitPositive();
+    vector<int> num {1, -2, 32, 4, 55};
     
-    vector<int> ans = test->map(num);
+    vector<int> ans = test->filter(num);
 
     for (const int& i : ans) {
         cout << i << " ";
