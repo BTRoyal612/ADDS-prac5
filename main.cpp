@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <string>
+#include <sstream>
 
 #include "MapGeneric.h"
 #include "MapTriple.h"
@@ -11,16 +13,38 @@
 #include "FilterNonPositive.h"
 #include "FilterForTwoDigitPositive.h"
 
+#include "ReduceGeneric.h"
+#include "ReduceMinimum.h"
+#include "ReduceGCD.h"
+
 using namespace std;
 
 int main() {
-    FilterGeneric * test = new FilterForTwoDigitPositive();
-    vector<int> num {1, -2, 32, 4, 55};
-    
-    vector<int> ans = test->filter(num);
+    MapGeneric * m1 = new MapTriple();
+    MapGeneric * m2 = new MapSquare();
+    MapGeneric * m3 = new MapAbsoluteValue();
 
-    for (const int& i : ans) {
-        cout << i << " ";
+    FilterGeneric * f1 = new FilterOdd();
+    FilterGeneric * f2 = new FilterNonPositive();
+    FilterGeneric * f3 = new FilterForTwoDigitPositive();
+    
+    ReduceGeneric * r1 = new ReduceMinimum();
+    ReduceGeneric * r2 = new ReduceGCD();
+
+    vector<int> num;
+
+    string str;
+    getline(cin, str);
+
+    stringstream ss(str);
+    for (int i; ss >> i;) {
+        num.push_back(i);
+        if (ss.peek() == ',') ss.ignore();
     }
-    cout << endl;
+
+    vector<int> rmap = m1->map(m3->map(num));
+
+    vector<int> rfilter = f1->filter(f3->filter(rmap));
+
+    cout << r1->reduce(rfilter) << " " << r2->reduce(rfilter) << endl;
 }
